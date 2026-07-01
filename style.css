@@ -1,0 +1,339 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    height: 100vh;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #0a1628 0%, #0d2137 30%, #0f3460 60%, #16213e 100%);
+}
+
+.ocean {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ===== 气泡 ===== */
+.bubble-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), rgba(173,216,230,0.1));
+    animation: rise linear infinite;
+}
+
+.b1 { width: 20px; height: 20px; left: 10%; bottom: -20px; animation-duration: 8s; animation-delay: 0s; }
+.b2 { width: 12px; height: 12px; left: 30%; bottom: -12px; animation-duration: 6s; animation-delay: 2s; }
+.b3 { width: 25px; height: 25px; left: 55%; bottom: -25px; animation-duration: 10s; animation-delay: 1s; }
+.b4 { width: 8px; height: 8px; left: 75%; bottom: -8px; animation-duration: 5s; animation-delay: 3s; }
+.b5 { width: 16px; height: 16px; left: 85%; bottom: -16px; animation-duration: 7s; animation-delay: 0.5s; }
+.b6 { width: 10px; height: 10px; left: 45%; bottom: -10px; animation-duration: 9s; animation-delay: 4s; }
+
+@keyframes rise {
+    0% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+}
+
+/* ===== 鲸鱼 ===== */
+.whale-container {
+    position: relative;
+    cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.whale-body {
+    position: relative;
+    width: 200px;
+    height: 140px;
+    background: linear-gradient(135deg, #4fc3f7, #0288d1);
+    border-radius: 50% 50% 45% 45%;
+    box-shadow: 0 10px 40px rgba(79, 195, 247, 0.4);
+    transition: all 0.5s ease;
+}
+
+/* 肚子 */
+.belly {
+    position: absolute;
+    bottom: 10px;
+    left: 25px;
+    width: 120px;
+    height: 50px;
+    background: linear-gradient(135deg, #b3e5fc, #e1f5fe);
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+/* 眼睛 */
+.eye {
+    position: absolute;
+    width: 18px;
+    height: 22px;
+    background: #1a1a2e;
+    border-radius: 50%;
+    top: 40px;
+    transition: all 0.3s ease;
+}
+
+.eye::after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 4px;
+}
+
+.left-eye { left: 55px; }
+.right-eye { right: 55px; }
+
+/* 嘴巴 */
+.mouth {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 8px;
+    border-bottom: 3px solid #01579b;
+    border-radius: 0 0 50% 50%;
+    transition: all 0.3s ease;
+}
+
+/* 腮红 */
+.blush {
+    position: absolute;
+    width: 22px;
+    height: 12px;
+    background: rgba(255, 150, 150, 0.4);
+    border-radius: 50%;
+    top: 55px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.left-blush { left: 40px; }
+.right-blush { right: 40px; }
+
+/* 鱼鳍 */
+.fin {
+    position: absolute;
+    width: 40px;
+    height: 25px;
+    background: linear-gradient(135deg, #4fc3f7, #0277bd);
+    border-radius: 50%;
+    top: 60px;
+    transition: all 0.3s ease;
+}
+
+.fin-left {
+    left: -18px;
+    transform: rotate(-20deg);
+}
+
+.fin-right {
+    right: -18px;
+    transform: rotate(20deg);
+}
+
+/* 尾巴 */
+.tail {
+    position: absolute;
+    right: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 35px solid #0288d1;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+}
+
+/* 喷水 */
+.water-spout {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 0;
+    background: linear-gradient(to top, rgba(255,255,255,0.8), transparent);
+    border-radius: 5px;
+    transition: height 0.5s ease;
+    opacity: 0;
+}
+
+.whale-container.spouting .water-spout {
+    height: 50px;
+    opacity: 1;
+    animation: spoutAnim 0.8s ease-out forwards;
+}
+
+@keyframes spoutAnim {
+    0% { height: 0; opacity: 0; }
+    30% { height: 60px; opacity: 1; }
+    100% { height: 0; opacity: 0; }
+}
+
+/* ===== 心情切换 ===== */
+.whale-container.happy .whale-body {
+    background: linear-gradient(135deg, #81c784, #388e3c);
+    box-shadow: 0 10px 40px rgba(129, 199, 132, 0.4);
+}
+
+.whale-container.happy .blush {
+    opacity: 1;
+}
+
+.whale-container.happy .tail {
+    border-left-color: #388e3c;
+}
+
+.whale-container.happy .mouth {
+    width: 40px;
+    height: 20px;
+    border-bottom: 4px solid #1b5e20;
+    border-radius: 0 0 50% 50%;
+}
+
+.whale-container.love .whale-body {
+    background: linear-gradient(135deg, #f48fb1, #d81b60);
+    box-shadow: 0 10px 40px rgba(244, 143, 177, 0.4);
+}
+
+.whale-container.love .blush {
+    opacity: 1;
+    background: rgba(255, 100, 100, 0.5);
+    width: 28px;
+    height: 15px;
+}
+
+.whale-container.love .tail {
+    border-left-color: #d81b60;
+}
+
+.whale-container.love .mouth {
+    width: 25px;
+    height: 12px;
+    border-bottom: 3px solid #880e4f;
+    border-radius: 50%;
+}
+
+.whale-container.sleepy .whale-body {
+    background: linear-gradient(135deg, #b0bec5, #546e7a);
+    box-shadow: 0 10px 40px rgba(176, 190, 197, 0.3);
+}
+
+.whale-container.sleepy .tail {
+    border-left-color: #546e7a;
+}
+
+.whale-container.sleepy .eye {
+    height: 6px;
+    top: 48px;
+    border-radius: 5px;
+}
+
+.whale-container.sleepy .eye::after {
+    display: none;
+}
+
+.whale-container.sleepy .mouth {
+    width: 20px;
+    height: 5px;
+    border-bottom: 2px solid #37474f;
+}
+
+/* ===== 消息气泡 ===== */
+.message-bubble {
+    margin-top: 40px;
+    padding: 16px 28px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    max-width: 280px;
+    text-align: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 20;
+}
+
+.message-bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ===== 按钮 ===== */
+.controls {
+    margin-top: 30px;
+    display: flex;
+    gap: 16px;
+    z-index: 20;
+}
+
+.btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn:active {
+    transform: scale(0.92);
+}
+
+.btn-happy:active { background: rgba(129, 199, 132, 0.4); }
+.btn-love:active { background: rgba(244, 143, 177, 0.4); }
+.btn-sleepy:active { background: rgba(176, 190, 197, 0.4); }
+
+/* ===== 计数 ===== */
+.counter {
+    position: absolute;
+    bottom: 60px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
