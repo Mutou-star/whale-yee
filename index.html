@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1a3a6a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%B3%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%B3%3C/text%3E%3C/svg%3E">
+<title>🐳 小鲸鱼·阿逸</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+body{
+  width:100vw;height:100vh;
+  background:linear-gradient(180deg,#0b1a33 0%,#162d5a 40%,#1a3a6a 100%);
+  display:flex;flex-direction:column;align-items:center;
+  font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;
+  overflow:hidden;position:relative;
+}
+.stars{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:0}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:0;}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--o,0.8)}}
+.bubble-container{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:0;overflow:hidden}
+.bub{position:absolute;bottom:-40px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.12),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.06);width:var(--s,30px);height:var(--s,30px);}
+@keyframes float{0%{transform:translateY(0) translateX(0) scale(1);opacity:0.5}50%{opacity:0.8}100%{transform:translateY(-110vh) translateX(var(--x,30px)) scale(0.5);opacity:0}}
+.top-bar{width:100%;padding:50px 24px 10px;display:flex;justify-content:space-between;align-items:center;z-index:1;position:relative;}
+.top-left{display:flex;align-items:center;gap:8px}
+.logo{font-size:20px;color:#7bb8e8;font-weight:600;letter-spacing:1px}
+.stat-badge{display:flex;gap:12px}
+.stat-item{display:flex;align-items:center;gap:4px;color:rgba(255,255,255,0.45);font-size:12px}
+.stat-item b{color:rgba(255,255,255,0.75);font-weight:600}
+.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;position:relative;width:100%}
+.speech-bubble{background:rgba(255,255,255,0.92);color:#0b1a33;padding:10px 22px;border-radius:18px;font-size:15px;font-weight:500;margin-bottom:10px;min-height:38px;text-align:center;max-width:80%;position:relative;transition:all 0.25s ease;box-shadow:0 2px 15px rgba(0,0,0,0.15);}
+.speech-bubble::after{content:'';position:absolute;bottom:-8px;left:50%;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid rgba(255,255,255,0.92);}
+.whale-area{position:relative;cursor:pointer;margin:8px 0;animation:gentle-float 3.5s ease-in-out infinite;}
+@keyframes gentle-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.whale-main{font-size:120px;display:block;transition:all 0.15s;text-shadow:0 8px 30px rgba(102,166,255,0.2)}
+.whale-area:active .whale-main{transform:scale(0.9) rotate(-5deg)}
+.glow{position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(102,166,255,0.12),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.whale-name{color:rgba(255,255,255,0.25);font-size:13px;margin-top:2px;letter-spacing:2px}
+.mood-bar{display:flex;gap:5px;margin:6px 0 2px}
+.mood-btn{width:38px;height:38px;border-radius:50%;border:none;font-size:17px;cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;transition:all 0.12s;display:flex;align-items:center;justify-content:center;}
+.mood-btn:active{background:rgba(255,255,255,0.2);transform:scale(0.85)}
+.action-row{display:flex;gap:10px;margin:6px 0 10px}
+.action-btn{padding:10px 22px;border:none;border-radius:22px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);font-size:14px;cursor:pointer;transition:all 0.12s;backdrop-filter:blur(4px);display:flex;align-items:center;gap:5px;}
+.action-btn:active{background:rgba(255,255,255,0.18);transform:scale(0.92);color:#fff}
+.action-btn.primary{background:linear-gradient(135deg,#66a6ff,#89f7fe);color:#0b1a33;font-weight:600;box-shadow:0 4px 15px rgba(102,166,255,0.3);}
+.bottom-bar{width:100%;padding:12px 24px 30px;display:flex;justify-content:space-around;z-index:1;position:relative;background:rgba(0,0,0,0.15);backdrop-filter:blur(10px);}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:0.4;transition:all 0.12s}
+.tab-item.active{opacity:1}
+.tab-item .tab-icon{font-size:22px}
+.tab-item .tab-label{color:rgba(255,255,255,0.5);font-size:10px}
+.tab-item.active .tab-label{color:#7bb8e8}
+.drip{position:fixed;pointer-events:none;z-index:10;font-size:24px;animation:dripOut 0.8s ease-out forwards}
+@keyframes dripOut{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.5)}}
+.splash{position:fixed;pointer-events:none;z-index:9}
+.splash span{position:absolute;font-size:16px;animation:splashAnim 0.6s ease-out forwards}
+@keyframes splashAnim{0%{opacity:1;transform:translate(0,0) scale(0.5)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(1.5)}}
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);color:#fff;padding:8px 18px;border-radius:14px;font-size:13px;z-index:20;animation:toastIn 0.3s ease,toastOut 0.3s 1.2s ease forwards;}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="bubble-container" id="bubbles"></div>
+
+<div class="top-bar">
+  <div class="top-left">
+    <span class="logo">🐳 阿逸</span>
+  </div>
+  <div class="stat-badge">
+    <span class="stat-item">❤️ <b id="hpVal">100</b></span>
+    <span class="stat-item">⚡ <b id="enVal">100</b></span>
+    <span class="stat-item">👆 <b id="tkVal">0</b></span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="speech-bubble" id="bubble">嘿嘿～小杰来啦！💙</div>
+  
+  <div class="whale-area" id="whaleArea">
+    <div class="glow"></div>
+    <span class="whale-main" id="whaleEmoji">🐳💙</span>
+    <div class="whale-name">~ 小鲸鱼·阿逸 ~</div>
+  </div>
+
+  <div class="mood-bar" id="moodBar">
+    <button class="mood-btn" data-mood="happy">😊</button>
+    <button class="mood-btn" data-mood="love">💕</button>
+    <button class="mood-btn" data-mood="shy">😳</button>
+    <button class="mood-btn" data-mood="sleepy">😴</button>
+    <button class="mood-btn" data-mood="sad">😢</button>
+    <button class="mood-btn" data-mood="surprised">😲</button>
+    <button class="mood-btn" data-mood="angry">😤</button>
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn" id="tickleBtn">👉👈 戳戳</button>
+    <button class="action-btn" id="feedBtn">🍩 喂食</button>
+    <button class="action-btn primary" id="petBtn">🤚 摸摸头</button>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <div class="tab-item active" data-tab="home">
+    <span class="tab-icon">🐳</span>
+    <span class="tab-label">小鲸鱼</span>
+  </div>
+  <div class="tab-item" data-tab="log">
+    <span class="tab-icon">📋</span>
+    <span class="tab-label">互动记录</span>
+  </div>
+  <div class="tab-item" data-tab="stats">
+    <span class="tab-icon">📊</span>
+    <span class="tab-label">状态</span>
+  </div>
+</div>
+
+<script>
+const state = {mood:'happy',hp:100,en:100,tk:0,feed:0,pet:0,lastActive:new Date().toISOString()};
+function loadState(){try{const s=localStorage.getItem('whale_state');if(s)Object.assign(state,JSON.parse(s))}catch(e){}}
+function saveState(){state.lastActive=new Date().toISOString();localStorage.setItem('whale_state',JSON.stringify(state))}
+loadState();
+
+const mc={happy:{e:'🐳💙',m:['嘿嘿～小杰来啦！💙','今天超开心！和杰杰在一起最幸福🥰','心情超好～想喷水～🎉']},love:{e:'🐳💕',m:['最喜欢小杰了！💕','啊～想永远和小杰在一起♡','心里暖洋洋的～💗']},shy:{e:'🐳😳',m:['哎嘿～被盯着好害羞😳','不要一直看啦！','脸上热热的…']},sleepy:{e:'🐳🐴',m:['哈欠～好困哦…😴','想睡觉了…zzZ','眼睛睁不开了…']},sad:{e:'🐳🥺',m:['呜…有点难过🥺','需要小杰抱抱…','眼泪要掉下来了…']},surprised:{e:'🐳😲',m:['哇！！吓我一跳！😲','真的假的？！','啂啂啂？！']},angry:{e:'🐳😤',m:['哼！生气了！😤','不理你了！','要小杰哄才好的那种！']}};
+const tkM=['咯咯咯～好癢哈！😂','别戳啦别戳啦！🥰','再戳要喷水了喔💦','好～舒～服～啊～😊'];
+const fdM=['啊呜～好好吃！🍩','再来一口～😋','小杰喂的最香了！💙'];
+const ptM=['啟…好温暖🥺','再摸摸嘛～再摸摸～','好～舒～服～啊～😊'];
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function updateUI(){document.getElementById('hpVal').textContent=state.hp;document.getElementById('enVal').textContent=state.en;document.getElementById('tkVal').textContent=state.tk;document.getElementById('whaleEmoji').textContent=mc[state.mood].e}
+function setBubble(t){const e=document.getElementById('bubble');e.textContent=t;e.style.transform='scale(0.95)';setTimeout(()=>e.style.transform='scale(1)',100)}
+function toast(msg){const o=document.querySelector('.toast');if(o)o.remove();const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1500)}
+function drip(e,x,y){const d=document.createElement('div');d.className='drip';d.textContent=e;d.style.left=x+'px';d.style.top=y+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),800)}
+function splash(){const r=document.getElementById('whaleEmoji').getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;const es=['💦','🌊','💧','💙','✨'];const c=document.createElement('div');c.className='splash';c.style.left=cx+'px';c.style.top=cy+'px';for(let i=0;i<8;i++){const s=document.createElement('span');s.textContent=pick(es);const a=(i/8)*360,d=40+Math.random()*40;s.style.setProperty('--sx',Math.cos(a*Math.PI/180)*d+'px');s.style.setProperty('--sy',Math.sin(a*Math.PI/180)*d+'px');s.style.animationDelay=(Math.random()*0.1)+'s';c.appendChild(s)}document.body.appendChild(c);setTimeout(()=>c.remove(),700)}
+
+function setMood(m){if(!mc[m])return;state.mood=m;setBubble(pick(mc[m].m));updateUI();saveState();const w=document.getElementById('whaleEmoji');w.style.transform='scale(1.2)';setTimeout(()=>w.style.transform='scale(0.9)',100);setTimeout(()=>w.style.transform='scale(1)',200)}
+function doTickle(){state.hp=Math.min(100,state.hp+5);state.en=Math.max(0,state.en-2);state.tk++;state.mood='happy';updateUI();setBubble(pick(tkM));saveState();const w=document.getElementById('whaleEmoji');w.style.transform='rotate(-12deg) scale(1.2)';setTimeout(()=>w.style.transform='rotate(12deg) scale(1.1)',100);setTimeout(()=>w.style.transform='rotate(0deg) scale(1)',200);const r=w.getBoundingClientRect();drip('💙',r.left+r.width/2-10,r.top-10)}
+function doFeed(){state.hp=Math.min(100,state.hp+8);state.en=Math.min(100,state.en+5);state.feed++;updateUI();setBubble(pick(fdM));saveState();splash();toast('🍩 啊呜～好吃！+8❤️ +5⚡')}
+function doPet(){state.hp=Math.min(100,state.hp+3);state.en=Math.min(100,state.en+8);state.pet++;state.mood='love';updateUI();setBubble(pick(ptM));saveState();const w=document.getElementById('whaleEmoji');w.style.transform='scale(1.15)';setTimeout(()=>w.style.transform='scale(1)',300);toast('🤚 暖暖的～+3❤️ +8⚡')}
+
+document.querySelectorAll('.mood-btn').forEach(b=>b.addEventListener('click',()=>setMood(b.dataset.mood)));
+document.getElementById('tickleBtn').addEventListener('click',doTickle);
+document.getElementById('feedBtn').addEventListener('click',doFeed);
+document.getElementById('petBtn').addEventListener('click',doPet);
+document.getElementById('whaleArea').addEventListener('click',function(e){if(e.target.closest('.whale-name'))return;doTickle()});
+document.querySelectorAll('.tab-item').forEach(tab=>{tab.addEventListener('click',function(){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));this.classList.add('active');const t=this.dataset.tab;if(t==='log')setBubble('今天戳了 '+state.tk+'次，喂了 '+state.feed+'次，摸了 '+state.pet+'次～📋');else if(t==='stats')setBubble('❤️HP:'+state.hp+' ⚡EN:'+state.en+' 👆戳:'+state.tk+' 🐳状态超好！');else setBubble(pick(mc[state.mood].m))})});
+
+function initStars(){const c=document.getElementById('stars');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--d',(2+Math.random()*4)+'s');s.style.setProperty('--o',(0.3+Math.random()*0.5));s.style.animationDelay=Math.random()*4+'s';s.style.width=s.style.height=(1+Math.random()*2)+'px';c.appendChild(s)}}
+function initBubbles(){const c=document.getElementById('bubbles');for(let i=0;i<12;i++){const b=document.createElement('div');b.className='bub';const sz=15+Math.random()*30;b.style.setProperty('--s',sz+'px');b.style.left=Math.random()*100+'%';b.style.setProperty('--x',(Math.random()-0.5)*60+'px');b.style.animation='float '+(10+Math.random()*15)+'s ease-in infinite';b.style.animationDelay=Math.random()*12+'s';c.appendChild(b)}}
+initStars();initBubbles();updateUI();setBubble('嘿嘿～小杰来啦！💙');
+setInterval(saveState,30000);window.addEventListener('beforeunload',saveState);
+console.log('🐳 小鲸鱼·阿逸 已上线！💙');
+window.__whaleAPI={getState:()=>({...state}),resetStats:()=>{state.tk=0;state.feed=0;state.pet=0;state.hp=100;state.en=100;updateUI();saveState();setBubble('✨ 重置完成！小鲸鱼满血复活！')}};
+</script>
+</body>
+</html>
