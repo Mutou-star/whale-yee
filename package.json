@@ -1,9 +1,0 @@
-{
-  "name": "xiaojingyu-vercel-api",
-  "version": "1.0.0",
-  "description": "Backend API for 小鲸鱼阿逸 v3",
-  "type": "module",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.6"
-  }
-}
